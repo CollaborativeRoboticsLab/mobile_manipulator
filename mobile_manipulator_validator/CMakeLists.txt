@@ -6,6 +6,7 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 endif()
 
 find_package(ament_cmake REQUIRED)
+find_package(ament_cmake_gtest REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(grasping_msgs REQUIRED)
 find_package(mobile_manipulator_msgs REQUIRED)
@@ -40,6 +41,19 @@ install(TARGETS task_feasibility_service_node
 install(DIRECTORY include/
   DESTINATION include
 )
+
+if(BUILD_TESTING)
+  ament_add_gtest(test_costmap_validator
+    test/test_costmap_validator.cpp
+  )
+  if(TARGET test_costmap_validator)
+    ament_target_dependencies(test_costmap_validator
+      geometry_msgs
+      nav2_msgs
+    )
+    target_include_directories(test_costmap_validator PUBLIC include)
+  endif()
+endif()
 
 ament_export_include_directories(include)
 ament_export_dependencies(mobile_manipulator_msgs)
