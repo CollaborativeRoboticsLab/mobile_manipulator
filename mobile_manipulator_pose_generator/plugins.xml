@@ -1,0 +1,6 @@
+<library path="mobile_manipulator_pose_generator">
+  <class type="mobile_manipulator_pose_generator::StandoffPoseGenerator"
+         base_class_type="mobile_manipulator_base::PoseGenerator">
+    <description>Generates standoff base poses around a target pose for mobile manipulation.</description>
+  </class>
+</library>

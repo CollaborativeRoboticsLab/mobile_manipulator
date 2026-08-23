@@ -1,0 +1,6 @@
+<library path="mobile_manipulator_pose_validator">
+  <class type="mobile_manipulator_pose_validator::GraspingPoseValidator"
+         base_class_type="mobile_manipulator_base::PoseValidator">
+    <description>Validates arm reachability through the grasping Cartesian feasibility service.</description>
+  </class>
+</library>

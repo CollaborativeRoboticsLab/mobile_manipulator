@@ -3,15 +3,20 @@
 <package format="3">
   <name>mobile_manipulator_ros</name>
   <version>0.1.0</version>
-  <description>Launch integration for the mobile-manipulator feasibility validator node.</description>
+  <description>Single-node mobile-manipulator runtime exposing feasibility services and execution action.</description>
   <maintainer email="kalanaratnayake95@gmail.com">ubuntu</maintainer>
   <license>MIT</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
+  <depend>mobile_manipulator_base</depend>
+  <depend>mobile_manipulator_msgs</depend>
+  <depend>pluginlib</depend>
+  <depend>rclcpp</depend>
+  <depend>rclcpp_action</depend>
+
   <exec_depend>launch</exec_depend>
   <exec_depend>launch_ros</exec_depend>
-  <exec_depend>mobile_manipulator_validator</exec_depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>

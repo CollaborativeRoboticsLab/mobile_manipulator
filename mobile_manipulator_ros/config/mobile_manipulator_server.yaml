@@ -1,0 +1,30 @@
+mobile_manipulator_server:
+  ros__parameters:
+    check_task_feasibility_service_name: check_task_feasibility
+    find_feasible_pose_service_name: find_feasible_pose
+    execute_task_pose_action_name: execute_task_pose
+    
+    pose_validator_plugin: mobile_manipulator_pose_validator::GraspingPoseValidator
+    pose_generator_plugin: mobile_manipulator_pose_generator::StandoffPoseGenerator
+    pose_selector_plugin: mobile_manipulator_pose_selector::LeastMovementPoseSelector
+    coordinator_plugin: mobile_manipulator_coordinator::DefaultCoordinator
+
+    GraspingPoseValidator:
+      service_name: check_cartesian_pose_feasibility
+      arm_base_frame: base_link
+      use_costmap_validation: false
+      costmap_topic: /global_costmap/costmap
+      costmap_occupied_threshold: 253
+
+    StandoffPoseGenerator:
+      output_frame: map
+      candidate_standoff_distances: [0.55, 0.70, 0.85]
+      candidate_angle_offsets_deg: [0.0, 30.0, -30.0]
+
+    LeastMovementPoseSelector:
+      distance_weight: 1.0
+      rotation_weight: 1.0
+
+    DefaultCoordinator:
+      navigation_action_name: navigate_to_pose
+      move_arm_action_name: move_arm_to_pose

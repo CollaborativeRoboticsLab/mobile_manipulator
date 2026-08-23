@@ -1,6 +1,9 @@
 geometry_msgs/Pose pose
 string frame_id
 string mode
+bool base_pose_valid
+geometry_msgs/Pose base_pose
+string base_frame_id
 ---
 bool feasible
 string mode_used

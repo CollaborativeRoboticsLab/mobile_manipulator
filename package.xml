@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>mobile_manipulator</name>
+  <version>0.1.0</version>
+  <description>Metapackage for mobile-manipulator base interfaces, ROS runtime, and message contracts.</description>
+  <maintainer email="kalanaratnayake95@gmail.com">ubuntu</maintainer>
+  <license>MIT</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>ament_cmake_core</buildtool_depend>
+
+  <exec_depend>mobile_manipulator_base</exec_depend>
+  <exec_depend>mobile_manipulator_coordinator</exec_depend>
+  <exec_depend>mobile_manipulator_control</exec_depend>
+  <exec_depend>mobile_manipulator_msgs</exec_depend>
+  <exec_depend>mobile_manipulator_pose_generator</exec_depend>
+  <exec_depend>mobile_manipulator_pose_selector</exec_depend>
+  <exec_depend>mobile_manipulator_pose_validator</exec_depend>
+  <exec_depend>mobile_manipulator_ros</exec_depend>
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+    <metapackage/>
+  </export>
+</package>

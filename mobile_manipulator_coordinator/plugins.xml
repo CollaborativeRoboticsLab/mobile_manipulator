@@ -1,0 +1,6 @@
+<library path="mobile_manipulator_coordinator">
+  <class type="mobile_manipulator_coordinator::DefaultCoordinator"
+         base_class_type="mobile_manipulator_base::Coordinator">
+    <description>Coordinates approved base navigation and final arm execution.</description>
+  </class>
+</library>

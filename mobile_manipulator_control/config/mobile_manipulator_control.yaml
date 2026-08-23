@@ -1,0 +1,34 @@
+mobile_manipulator_control_node:
+  ros__parameters:
+    startup_delay_sec: 2.0
+    shutdown_when_done: true
+    execute_after_validation: true
+    find_feasible_pose_on_failure: true
+    service_wait_timeout_sec: 5.0
+    service_response_timeout_sec: 15.0
+    action_wait_timeout_sec: 5.0
+    action_result_timeout_sec: 180.0
+
+    check_task_feasibility_service_name: check_task_feasibility
+    find_feasible_pose_service_name: find_feasible_pose
+    execute_task_pose_action_name: execute_task_pose
+
+    mode: mobile_manipulator
+    frame_id: map
+    x: 0.8
+    y: 0.0
+    z: 0.25
+    qx: 0.0
+    qy: 0.0
+    qz: 0.0
+    qw: 1.0
+
+    base_pose_valid: false
+    base_frame_id: map
+    base_x: 0.0
+    base_y: 0.0
+    base_z: 0.0
+    base_qx: 0.0
+    base_qy: 0.0
+    base_qz: 0.0
+    base_qw: 1.0

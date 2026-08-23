@@ -1,0 +1,25 @@
+geometry_msgs/Pose pose
+string frame_id
+string mode
+bool validated
+bool approved_base_pose_valid
+geometry_msgs/Pose approved_base_pose
+string approved_base_frame
+---
+bool success
+bool feasible
+string mode_used
+string stage
+string failure_reason
+string suggested_fallback
+string message
+string planning_frame
+geometry_msgs/Pose planning_pose
+bool planning_pose_valid
+geometry_msgs/Pose base_target_pose
+string base_target_frame
+bool base_target_pose_valid
+float64 candidate_score
+---
+string stage
+string message

@@ -1,0 +1,6 @@
+<library path="mobile_manipulator_pose_selector">
+  <class type="mobile_manipulator_pose_selector::LeastMovementPoseSelector"
+         base_class_type="mobile_manipulator_base::PoseSelector">
+    <description>Selects the lowest-movement feasible base pose after validating candidates on demand.</description>
+  </class>
+</library>
