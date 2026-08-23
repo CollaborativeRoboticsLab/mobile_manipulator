@@ -13,6 +13,17 @@ Umbrella package for the generic mobile-manipulator feasibility and execution st
 - `mobile_manipulator_ros`: runtime server node, parameter files, and launch integration
 - `mobile_manipulator_control`: generic one-shot ROS 2 client node for testing the three public mobile-manipulator interfaces before using capability runners
 
+## Documentation
+
+- [ROS 2 interfaces](docs/ros2_interfaces.md)
+- [Runtime server](docs/server.md)
+- [Shared base classes](docs/base_class.md)
+- [Validator plugin](docs/pose_validator.md)
+- [Generator plugin](docs/pose_generator.md)
+- [Selector plugin](docs/pose_selector.md)
+- [Coordinator plugin](docs/coordinator.md)
+- [Parameters](docs/parameters.md)
+
 ## Runtime model
 
 `mobile_manipulator_ros` exposes three public interfaces:
