@@ -71,6 +71,8 @@ public:
   }
 
 private:
+  static constexpr const char* kMoveBaseThenArmFallback = "move_base_then_arm";
+
   template <typename InterfaceT>
   /**
    * @brief Load, configure, and return a plugin instance of the requested interface type.
@@ -187,6 +189,84 @@ private:
   }
 
   /**
+   * @brief Build a normalized fallback result when candidate generation cannot find a feasible solution.
+   *
+   * @param request Validation request that drove candidate generation.
+   * @return Structured fallback result for the public ROS APIs.
+   */
+  static mobile_manipulator_base::PoseValidationResult
+  no_feasible_candidate_result(const mobile_manipulator_base::PoseValidationRequest& request)
+  {
+    mobile_manipulator_base::PoseValidationResult result;
+    result.feasible = false;
+    result.mode_used = request.mode;
+    result.failure_reason = "no_feasible_candidate";
+    result.suggested_fallback = kMoveBaseThenArmFallback;
+    result.message = "No generated candidate base pose produced a feasible arm target.";
+    return result;
+  }
+
+  /**
+   * @brief Build the fallback hint exposed after execution finishes or fails.
+   *
+   * @param validation Validation result for the approved execution request.
+   * @param execution Execution result returned by the coordinator.
+   * @return Preferred fallback hint for the public action result.
+   */
+  static std::string execution_fallback_hint(const mobile_manipulator_base::PoseValidationResult& validation,
+                                             const mobile_manipulator_base::ExecutionResult& execution)
+  {
+    if (!execution.suggested_fallback.empty())
+    {
+      return execution.suggested_fallback;
+    }
+    return validation.suggested_fallback;
+  }
+
+  /**
+   * @brief Build a validation-guard failure result when execution cannot proceed.
+   *
+   * @param goal Action goal that failed the guard.
+   * @param failure_reason Machine-readable failure reason.
+   * @param message Human-readable failure message.
+   * @return Action result populated with consistent guard semantics.
+   */
+  std::shared_ptr<ExecuteTaskPose::Result> validation_guard_result(const ExecuteTaskPose::Goal& goal,
+                                                                   const std::string& failure_reason,
+                                                                   const std::string& message) const
+  {
+    auto result = std::make_shared<ExecuteTaskPose::Result>();
+    result->success = false;
+    result->feasible = false;
+    result->mode_used = goal.mode;
+    result->stage = "validation_guard";
+    result->failure_reason = failure_reason;
+    result->message = message;
+    return result;
+  }
+
+  /**
+   * @brief Build an action result after coordinator execution finishes.
+   *
+   * @param validation Validation result for the approved execution request.
+   * @param execution Coordinator execution result.
+   * @return Normalized action result containing validation and execution state.
+   */
+  std::shared_ptr<ExecuteTaskPose::Result>
+  result_from_execution(const mobile_manipulator_base::PoseValidationResult& validation,
+                        const mobile_manipulator_base::ExecutionResult& execution) const
+  {
+    auto result = result_from_validation(validation, execution.success, execution.stage);
+    result->failure_reason = execution.failure_reason;
+    result->suggested_fallback = execution_fallback_hint(validation, execution);
+    result->message = execution.message;
+    result->base_target_pose_valid = execution.base_pose_valid;
+    result->base_target_pose = execution.base_pose;
+    result->base_target_frame = execution.base_frame;
+    return result;
+  }
+
+  /**
    * @brief Publish feedback for an ongoing ExecuteTaskPose action.
    *
    * @param goal_handle Handle to the current action goal.
@@ -230,11 +310,7 @@ private:
 
     if (!selected)
     {
-      response->feasible = false;
-      response->mode_used = request->mode;
-      response->failure_reason = "no_feasible_candidate";
-      response->suggested_fallback = "move_base_then_arm";
-      response->message = "No generated candidate base pose produced a feasible arm target.";
+      copy_validation_result(no_feasible_candidate_result(validation_request), *response);
       return;
     }
 
@@ -284,13 +360,8 @@ private:
     const auto goal = goal_handle->get_goal();
     if (!goal->validated)
     {
-      auto result = std::make_shared<ExecuteTaskPose::Result>();
-      result->success = false;
-      result->feasible = false;
-      result->mode_used = goal->mode;
-      result->stage = "validation_guard";
-      result->failure_reason = "pose_not_validated";
-      result->message = "ExecuteTaskPose requires a validated pose and approved execution solution.";
+      auto result = validation_guard_result(
+          *goal, "pose_not_validated", "ExecuteTaskPose requires a validated pose and approved execution solution.");
       goal_handle->abort(result);
       return;
     }
@@ -326,14 +397,7 @@ private:
           publish_feedback(goal_handle, stage, message);
         });
 
-    auto result = result_from_validation(validation, execution_result.success, execution_result.stage);
-    result->failure_reason = execution_result.failure_reason;
-    result->suggested_fallback = execution_result.suggested_fallback.empty() ? validation.suggested_fallback :
-                                                                               execution_result.suggested_fallback;
-    result->message = execution_result.message;
-    result->base_target_pose_valid = execution_result.base_pose_valid;
-    result->base_target_pose = execution_result.base_pose;
-    result->base_target_frame = execution_result.base_frame;
+    auto result = result_from_execution(validation, execution_result);
 
     if (execution_result.success)
     {

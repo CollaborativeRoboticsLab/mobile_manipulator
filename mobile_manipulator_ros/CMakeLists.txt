@@ -47,4 +47,9 @@ install(DIRECTORY launch
 ament_export_include_directories(include)
 ament_export_dependencies(mobile_manipulator_base mobile_manipulator_msgs pluginlib)
 
+if(BUILD_TESTING)
+  find_package(launch_testing_ament_cmake REQUIRED)
+  add_launch_test(test/test_mobile_manipulator_fallback_launch.py TIMEOUT 60)
+endif()
+
 ament_package()
