@@ -1,0 +1,11 @@
+version: 1
+scenes:
+	- name: crlab_table
+		package_name: grasping_omron_moma
+		workspace_file: config/crlab_table.yaml
+		scene_revision: ""
+		station_frame: world
+		semantic_tags: [table, crlab, grasping]
+		allowed_modes: [pick, place, inspect, arm_only, move_base_then_arm]
+		selector_profile: default
+		description: CRLab table scene backed by the calibrated Omron MoMa workspace file.

@@ -7,6 +7,7 @@ endif()
 
 find_package(ament_cmake REQUIRED)
 find_package(geometry_msgs REQUIRED)
+find_package(grasping_msgs REQUIRED)
 find_package(rclcpp REQUIRED)
 
 install(DIRECTORY include/
@@ -14,6 +15,6 @@ install(DIRECTORY include/
 )
 
 ament_export_include_directories(include)
-ament_export_dependencies(geometry_msgs rclcpp)
+ament_export_dependencies(geometry_msgs grasping_msgs rclcpp)
 
 ament_package()

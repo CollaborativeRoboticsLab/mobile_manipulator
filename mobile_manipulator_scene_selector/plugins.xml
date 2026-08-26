@@ -1,0 +1,6 @@
+<library path="mobile_manipulator_scene_selector">
+  <class type="mobile_manipulator_scene_selector::ExactNameThenTagsSelector"
+         base_class_type="mobile_manipulator_base::SceneSelector">
+    <description>Selects a scene by exact name first, then filters by mode and required tags.</description>
+  </class>
+</library>
