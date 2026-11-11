@@ -235,7 +235,7 @@ private:
 
     auto request = std::make_shared<grasping_msgs::srv::CheckCartesianPoseFeasibility::Request>();
     request->pose = pose;
-    request->frame_id = frame_id;
+    request->planning_frame = frame_id;
     request->mode = mode;
     auto future = grasping_client_->async_send_request(request);
     if (future.wait_for(std::chrono::seconds(10)) != std::future_status::ready)

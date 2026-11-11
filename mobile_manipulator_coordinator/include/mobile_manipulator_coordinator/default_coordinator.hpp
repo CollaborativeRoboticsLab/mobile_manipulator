@@ -158,9 +158,8 @@ private:
     }
 
     grasping_msgs::action::MoveToPose::Goal goal;
-    goal.target_pose.header.frame_id = request.frame_id;
-    goal.target_pose.header.stamp = node_->now();
-    goal.target_pose.pose = request.pose;
+    goal.planning_frame = request.frame_id;
+    goal.pose = request.pose;
 
     auto send_future = arm_client_->async_send_goal(goal);
     if (send_future.wait_for(std::chrono::seconds(10)) != std::future_status::ready)
